@@ -1,5 +1,8 @@
 #include <iostream>
 
+#define MAX_PROF    10
+#define MAX_ALUNO   100
+
 using namespace std;
 
 class pessoa {
@@ -184,28 +187,15 @@ using namespace std;
 
 int main()
 {
-   alunos aluno[100];
-   professores professor[10];
+   alunos aluno[MAX_ALUNO];
+   professores professor[MAX_PROF];
    ClockCalendar dataHora[10];
    int auxMatricula, auxSwitch, auxSenha, auxLogin;
    int auxProf = 0;
    int auxAluno = 0;
    float auxNota1, auxNota2;
    bool flagLogin = false;
-   
-//    for (int i=0; i<4; i++) {
-//         cout << "Matricula: ";
-//         cin >> auxMatricula;
-//         cout << "Nota 1: ";
-//         cin >> auxNota1;
-//         cout << "Nota 2: ";
-//         cin >> auxNota2;
-        
-//         aluno[i].setMatricula(auxMatricula);
-//         aluno[i].setNota1(auxNota1);
-//         aluno[i].setNota2(auxNota2);
-//    }
-   
+     
    cout << "Digite:\n"
             "1 para login\n"
             "2 para logout\n"
@@ -232,7 +222,12 @@ int main()
                 cout << "senha: ";
                 cin >> auxSenha;
                 //aqui usar map pra ver se existe cadastro
-                flagLogin = true;
+                for(int i = 0; i<MAX_PROF; i++) {
+                    if(auxLogin == professor[i].getLogin() && auxSenha == professor[i].getSenha()) {
+                        flagLogin = true;
+                        break;
+                    } 
+                }                
             } else if (!flagLogin && auxProf == 0) {
                 cout << "nenhum professor cadastrado, digite 8 para incluir um novo professor";
             }
