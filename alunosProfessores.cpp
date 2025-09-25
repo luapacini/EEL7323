@@ -1,195 +1,47 @@
 #include <iostream>
-
-#define MAX_PROF    10
-#define MAX_ALUNO   100
+#include "clockCalendar.h"
+#include "pessoa.h"
+#include "professor.h"
+#include "aluno.h"
 
 using namespace std;
 
-class pessoa {
-        char atributo1[10];
-        char atributo2[10];    
-        char nome[10];
+class cadastroAlunos {
+        alunos aluno[MAX_ALUNO];
+        ClockCalendar dataHora[MAX_ALUNO];
+        bool valido[MAX_ALUNO];
     public:
-        void setAtributo1(char newAtributo1[10]);
-        void setAtributo2(char newAtributo2[10]);
-        void setNome(char newNome[10]);
-        char getNome();
-        char getAtributo1();
-        char getAtributo2();
+        bool getFlag(int indice);
+        void setFlag(bool newFlag, int indice);
 };
 
-class professores: public pessoa {
-        char login[10];
-        char senha[10];    
-        int matricula;
+class cadastroProfessores {
+        professores professor[MAX_PROF];
+        ClockCalendar dataHora[MAX_PROF];
+        bool valido[MAX_PROF];
     public:
-        void setLogin(char newLogin[10]);
-        void setSenha(char newSenha[10]);
-        void setMatricula(int newMatricula[10]);
-        int getMatricula();
-        char getLogin();
-        char getSenha();
+        bool getFlag(int indice);
+        void setFlag(bool newFlag, int indice);
 };
 
-class alunos: public pessoa {
-        int matricula;
-        float nota1;
-        float nota2;
-    public:
-        void setMatricula(int newMatricula);
-        void setNota1(float newNota1);
-        void setNota2(float newNota2);
-        int getMatricula();
-        float getNota1();
-        float getNota2();
-};
-
-class Clock {
-   protected:
-      int hr, min, sec, isPm;
-   public:
-      Clock (int h, int s, int m, int pm){
-           hr = h;
-           min = m;
-           sec = s;
-           isPm = pm;
-      }
-      void setClock (int h, int m, int s, int pm){
-           hr = h;
-           min = m;
-           sec = s;
-           isPm = pm;
-      }
-      void readClock (int& h, int& m, int& s, int& pm){
-           h = hr;
-           m = min;
-           s = sec;
-           pm = isPm;
-      }
-      void advance (){
-         if (sec < 59)
-            sec++;
-         else {
-            sec = 0;
-            if (min < 59)
-               min++;
-            else {
-               min = 0;
-               if (hr < 12)
-                  hr++;
-               else {
-                  hr = 0;
-               }
-            }
-         }
-      }
-};
-
-class Calendar {
-   protected:
-      int mo, day, yr;
-   public:
-      Calendar (int m, int d, int y){
-        mo = m;
-        day = d;
-        yr = y;
-      }
-      void setCalendar (int m, int d, int y){
-        mo = m;
-        day = d;
-        yr = y;
-      }
-      void readCalendar (int& m, int& d, int& y){
-        m = mo;
-        d = day;
-        y = yr;
-      }
-      void advance (){};
-};
-
-class ClockCalendar : public Clock, public Calendar {
-   public:
-      ClockCalendar (int mt, int d, int y, int h, int m, int s, int pm);
-      void advance ();
-};
-
-ClockCalendar::ClockCalendar (int mt, int d, int y, int h, int m, int s, int pm) : Clock (h, m, s, pm), Calendar (mt, d, y){
+bool cadastroProfessores::getFlag(int indice){
+    return valido[indice];
+}
+void cadastroProfessores::setFlag(bool newFlag, int indice) {
+    valido[indice] = newFlag;
 }
 
-void ClockCalendar::advance (){ // avancar o calendario, caso o clock
-   int wasPm = isPm;       // mude de AM para PM.
-   Clock::advance();
-   if (wasPm && !isPm)
-      Calendar::advance();
+bool cadastroAlunos::getFlag(int indice){
+    return valido[indice];
 }
-
-void pessoa::setNome(char newNome[10]) {
-    for (int i=0; i<10; i++) {
-        nome[i] = newNome[i];
-    }
-}
-void pessoa::setAtributo1(char newAtributo1[10]) {
-    for (int i=0; i<10; i++) {
-        atributo1[i] = newAtributo1[i];
-    }
-}
-void pessoa::setAtributo2(char newAtributo2[10]) {
-    for (int i=0; i<10; i++) {
-        atributo2[i] = newAtributo2[i];
-    }
-}
-
-void professores::setLogin(char newLogin[10]) {
-    for (int i=0; i<10; i++) {
-        login[i] = newLogin[i];
-    }
-}
-void professores::setSenha(char newSenha[10]) {
-    for (int i=0; i<10; i++) {
-        senha[i] = newSenha[i];
-    }
-}
-void professores::setMatricula(int newMatricula[10]) {
-    for (int i=0; i<10; i++) {
-        matricula[i] = newMatricula[i];
-    }
-}
-char professores::getLogin() {
-    return login[10];
-}
-char professores::getSenha() {
-    return senha[10];
-}
-int professores::getMatricula() {
-    return matricula;
-}
-
-void alunos::setMatricula(int newMatricula) {
-    matricula = newMatricula;
-}
-void alunos::setNota1(float newNota1) {
-    nota1 = newNota1;
-}
-void alunos::setNota2(float newNota2) {
-    nota2 = newNota2;
-}
-int alunos::getMatricula() {
-    return matricula;
-}
-float alunos::getNota1() {
-    return nota1;
-}
-float alunos::getNota2() {
-    return nota2;
+void cadastroAlunos::setFlag(bool newFlag, int indice) {
+    valido[indice] = newFlag;
 }
 
 using namespace std;
 
 int main()
 {
-   alunos aluno[MAX_ALUNO];
-   professores professor[MAX_PROF];
-   ClockCalendar dataHora[10];
    int auxMatricula, auxSwitch, auxSenha, auxLogin;
    int auxProf = 0;
    int auxAluno = 0;
@@ -243,7 +95,7 @@ int main()
 
        case 3: //incluir aluno
        if(auxProf > 0) {
-            if (auxAluno < 100) {
+            if (auxAluno < MAX_ALUNO) {
                 cout << "Matricula: ";
                 cin >> auxMatricula;
                 cout << "Nota 1: ";
@@ -311,7 +163,7 @@ int main()
             break;
 
         case 8: //incluir professor
-            if (auxProf < 10) {
+            if (auxProf < MAX_PROF) {
                 cout << "login: ";
                 cin >> auxLogin;
                 cout << "senha: ";
@@ -377,8 +229,7 @@ int main()
             break;
         default:
                 cout << "Nao eh uma opcao\n";
-                auxSwitch=1;
-        
+                auxSwitch=1;        
    }
    return 0;
 }
