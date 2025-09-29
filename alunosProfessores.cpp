@@ -11,6 +11,7 @@ class cadastroAlunos {
         ClockCalendar dataHora[MAX_ALUNO];
         bool valido[MAX_ALUNO];
     public:
+        cadastroAlunos();
         bool getFlag(int indice);
         void setFlag(bool newFlag, int indice);
 };
@@ -20,15 +21,23 @@ class cadastroProfessores {
         ClockCalendar dataHora[MAX_PROF];
         bool valido[MAX_PROF];
     public:
+        cadastroProfessores();
         bool getFlag(int indice);
         void setFlag(bool newFlag, int indice);
 };
 
+cadastroProfessores::cadastroProfessores() {
+
+}
 bool cadastroProfessores::getFlag(int indice){
     return valido[indice];
 }
 void cadastroProfessores::setFlag(bool newFlag, int indice) {
     valido[indice] = newFlag;
+}
+
+cadastroAlunos::cadastroAlunos(){
+
 }
 
 bool cadastroAlunos::getFlag(int indice){
@@ -47,6 +56,10 @@ int main()
    int auxAluno = 0;
    float auxNota1, auxNota2;
    bool flagLogin = false;
+
+
+   cadastroAlunos cadastroAluno;
+   cadastroProfessores cadastroProf;
      
    cout << "Digite:\n"
             "1 para login\n"
@@ -75,7 +88,7 @@ int main()
                 cin >> auxSenha;
                 //aqui usar map pra ver se existe cadastro
                 for(int i = 0; i<MAX_PROF; i++) {
-                    if(auxLogin == professor[i].getLogin() && auxSenha == professor[i].getSenha()) {
+                    if(auxLogin == cadastroProf.getLogin() && auxSenha == cadastroProf[i].getSenha()) {
                         flagLogin = true;
                         break;
                     } 
