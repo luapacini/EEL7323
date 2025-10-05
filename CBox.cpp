@@ -8,9 +8,9 @@ class box: shape3D {
 };
 
 box::box(float alt, float larg, float comp) {
-    setAltura = alt;
-    setLargura = larg;
-    setComprimento = comp;
+    setAltura(alt);
+    setLargura(larg);
+    setComprimento(comp);
 }
 
 float box::calculaVolume(float alt, float larg, float comp) {

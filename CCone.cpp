@@ -9,8 +9,8 @@ class cone: shape3D {
 };
 
 cone::cone(float alt, float r) {
-    altura = alt;
-    raio = r;
+    setAltura(alt);
+    setRaio(r);
 }
 
 float cone::calculaVolume(float alt, float r) {

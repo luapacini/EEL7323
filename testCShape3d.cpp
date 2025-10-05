@@ -24,24 +24,24 @@
 #include "CCylinder.cpp"
 
 int main(){
-	CShape3d* shape;
+	shape3D* shape;
 
 	// Um ponteiro para CShape3d assume a forma de um CBox
 	//
-	shape = new CBox(10.5f, 12.2f, 5.7f);
-	cout << "Volume do paralelogramo: " << shape->volume() << endl;
+	shape = new box(10.5f, 12.2f, 5.7f);
+	cout << "Volume do paralelogramo: " << shape->calculaVolume() << endl;
 	delete shape;
 
 	// Um ponteiro para CShape3d assume a forma de um CCone
 	//
-	shape = new CCone(1.2f, 3.4f);
-	cout << "Volume do cone: " << shape->volume() << endl;
+	shape = new cone(1.2f, 3.4f);
+	cout << "Volume do cone: " << shape->calculaVolume() << endl;
 	delete shape;
 
 	// Um ponteiro para CShape3d assume a forma de um CCylinder
 	//
-	shape = new CCylinder(1.2f, 4.5f);
-	cout << "Volume do cilindro: " << shape->volume() << endl;
+	shape = new cilindro(1.2f, 4.5f);
+	cout << "Volume do cilindro: " << shape->calculaVolume() << endl;
 	delete shape;
 
 	return 0;

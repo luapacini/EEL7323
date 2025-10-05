@@ -9,8 +9,8 @@ class cilindro: shape3D {
 };
 
 cilindro::cilindro(float alt, float r) {
-    altura = alt;
-    raio = r;
+    setAltura(alt);
+    setRaio(r);
 }
 
 float cilindro::calculaVolume(float alt, float r) {
