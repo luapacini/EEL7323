@@ -1,7 +1,7 @@
 #include <iostream>
 #include "CShape3d.cpp"
 
-class box: shape3D {
+class box: public shape3D {
     public:
         box(float alt, float larg, float comp);        
         float calculaVolume(float alt, float larg, float comp);

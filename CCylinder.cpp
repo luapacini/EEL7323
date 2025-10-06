@@ -2,7 +2,7 @@
 #include <math.h>
 #include "CShape3d.cpp"
 
-class cilindro: shape3D {
+class cilindro: public shape3D {
     public:
         cilindro(float alt, float r);
         float calculaVolume(float alt, float r);
@@ -14,5 +14,5 @@ cilindro::cilindro(float alt, float r) {
 }
 
 float cilindro::calculaVolume(float alt, float r) {
-    return M_PI*r*r*alt;
+    return 3.14159*r*r*alt;
 }

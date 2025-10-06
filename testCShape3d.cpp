@@ -23,7 +23,9 @@
 #include "CCone.cpp"
 #include "CCylinder.cpp"
 
-int main(){
+using namespace std;
+
+int WinMain(){
 	shape3D* shape;
 
 	// Um ponteiro para CShape3d assume a forma de um CBox

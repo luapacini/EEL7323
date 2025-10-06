@@ -1,3 +1,6 @@
+#ifndef CSHAPE3D
+#define CSHAPE3D
+
 #include <iostream>
 
 class shape3D {
@@ -48,3 +51,5 @@ float shape3D::getLargura() {
 float shape3D::getComprimento() {
     return comprimento;
 }
+
+#endif
