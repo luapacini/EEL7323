@@ -25,7 +25,7 @@
 
 using namespace std;
 
-int WinMain(){
+int main(){
 	shape3D* shape;
 
 	// Um ponteiro para CShape3d assume a forma de um CBox

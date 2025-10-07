@@ -18,6 +18,8 @@ class shape3D {
         float getLargura();
         float getComprimento();
         float getRaio();
+
+        float calculaVolume() { return 0.0; };
 };
 
 void shape3D::setAltura(float newAltura) {
