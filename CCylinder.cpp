@@ -7,11 +7,11 @@
 
 class cilindro: public shape3D {
     public:
-        cilindro(float alt, float r);
+        cilindro(float r, float alt);
         float calculaVolume();
 };
 
-cilindro::cilindro(float alt, float r) {
+cilindro::cilindro(float r, float alt) {
     setAltura(alt);
     setRaio(r);
 }

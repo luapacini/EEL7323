@@ -7,11 +7,11 @@
 
 class cone: public shape3D {
     public:
-        cone(float alt, float r);
+        cone(float r, float alt);
         float calculaVolume();
 };
 
-cone::cone(float alt, float r) {
+cone::cone(float r, float alt) {
     setAltura(alt);
     setRaio(r);
 }
