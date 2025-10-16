@@ -110,7 +110,7 @@ class Controller {
 Controller::Controller() {
 }
 
-Actuator** getAtuadores() {
+Actuator** Controller::getAtuadores() {
     return atuadores;
 }
 
@@ -143,7 +143,8 @@ template <typename T>
     T maxValue(T actuatorArray[MAX_ARRAY]) {
         T aux = 0;
         for (int i=0; i<MAX_ARRAY; i++) {
-            if (actuatorArray[i] > aux) aux = actuatorArray[i];
+            if (actuatorArray[i].intensidade > aux) aux = actuatorArray[i];
+            if (actuatorArray[i].velocidade > aux) aux = actuatorArray[i];
         }
 
         return aux;
@@ -179,5 +180,5 @@ void main() {
     controlador.activateAll();
 
     //maxValue
-
+    float valorMaximo = maxValue(controlador.getAtuadores());
 }
