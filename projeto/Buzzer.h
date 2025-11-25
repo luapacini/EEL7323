@@ -10,9 +10,9 @@ class Buzzer: public Atuador {
     public:
         int getFrequencia();
         void setFrequencia(int newFreq);
-        void ligar(bool estado);
-        void desligar(bool estado);
-        void toggle(bool estado);
+        void ligar();
+        void desligar();
+        void toggle();
 };
 
 #endif

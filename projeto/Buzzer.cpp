@@ -8,14 +8,14 @@ void Buzzer::setFrequencia(int newFreq) {
     frequencia = newFreq;
 }
 
-void Buzzer::ligar(bool estado) {
+void Buzzer::ligar() {
     estado = true;
 }
 
-void Buzzer::desligar(bool estado) {
+void Buzzer::desligar() {
     estado = false;
 }
 
-void Buzzer::toggle(bool estado) {
+void Buzzer::toggle() {
     estado = !estado;
 }
