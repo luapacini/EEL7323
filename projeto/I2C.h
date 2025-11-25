@@ -28,11 +28,11 @@ class I2C {
         void SendStop(void);
         void WriteDataByte(uint8_t data);
     public:
-        void Init(uint16_t speed);
-        void StartTransmission(uint8_t slave_address);
-        void RequestTransmission(uint8_t slave_address);
-        void WriteData(uint8_t device_address, uint8_t *data, uint8_t length);
-        void ReadData(uint8_t device_address,  uint8_t *data, uint8_t bytes_num);
+        static void Init(uint16_t speed);
+        static void StartTransmission(uint8_t slave_address);
+        static void RequestTransmission(uint8_t slave_address);
+        static void WriteData(uint8_t device_address, uint8_t *data, uint8_t length);
+        static oid ReadData(uint8_t device_address,  uint8_t *data, uint8_t bytes_num);
 };
 
 #endif

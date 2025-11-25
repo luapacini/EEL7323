@@ -35,11 +35,11 @@ class SHT30: public Sensor {
         uint8_t crc8(uint8_t *msg, int lengthOfMsg, uint8_t init);
         bool getModoAquisicao();
     public:
-        void aquisitionSetup();
-        uint8_t periodicAquisition();
-        uint8_t periodicAquisitionBreak();
-        void oneShotAquisition();                
-        void setModoAquisicao(bool modo);
+        static void aquisitionSetup();
+        static uint8_t periodicAquisition();
+        static uint8_t periodicAquisitionBreak();
+        static void oneShotAquisition();                
+        static void setModoAquisicao(bool modo);
 };
 
 #endif
