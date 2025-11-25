@@ -1,4 +1,9 @@
-class Buzzer {
+#ifndef BUZZER_H
+#define BUZZER_H    
+
+#include "Atuador.h"
+
+class Buzzer: public Atuador {
     private:
         int frequencia;
         bool estado;
@@ -9,3 +14,5 @@ class Buzzer {
         void desligar(bool estado);
         void toggle(bool estado);
 };
+
+#endif
