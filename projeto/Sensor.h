@@ -9,7 +9,7 @@
 using namespace std;
 
 class Sensor {
-    private:
+    protected:
         string nome;
         vector<float> buffer;
     public:

@@ -32,7 +32,7 @@ class I2C {
         static void StartTransmission(uint8_t slave_address);
         static void RequestTransmission(uint8_t slave_address);
         static void WriteData(uint8_t device_address, uint8_t *data, uint8_t length);
-        static oid ReadData(uint8_t device_address,  uint8_t *data, uint8_t bytes_num);
+        static void ReadData(uint8_t device_address,  uint8_t *data, uint8_t bytes_num);
 };
 
 #endif

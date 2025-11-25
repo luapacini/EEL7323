@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define BIT_CHECK(REG, BIT)      ((REG >> BIT) & 1)
+
 class Serial {
     private:
         char dec_to_hex(uint8_t dec);

@@ -3,11 +3,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#define BIT_CHECK(REG, BIT)      ((REG >> BIT) & 1)
-
-// ---------------------------------------------------------------------------------------------------
-// Serial Library code
-
 void Serial::Init() 
 {
     UBRR0H = 0;
