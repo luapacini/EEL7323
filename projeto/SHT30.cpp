@@ -41,7 +41,7 @@ uint8_t SHT30::periodicAquisition() {
     msg[0] = 0xE0; //tabela 11 datasheet /fetch data/
     msg[1] = 0x00; //tabela 11 datasheet /fetch data/
 
-    I2C::WriteData(SHT30_ADDRESS, msg, 2); // Writes the data
+    I2C::WriteData(SHT30_ADDRESS, msg, 2); //escreve
     
     I2C::ReadData(SHT30_ADDRESS, leitura, 6);
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ADC_H
+#define ADC_H
 
 #include <stdint.h>
 
@@ -53,6 +54,8 @@ class ADC {
         unsigned long sum = 0.0; // For the moving average
         uint16_t moving_average(uint16_t new_sample);
     public:
-        void Init(uint8_t device_address, uint8_t channel, uint8_t gain, uint8_t mode, uint8_t data_rate, uint8_t comp_mode, uint8_t comp_pol, uint8_t comp_lat, uint8_t comp_que);
+        static void Init(uint8_t device_address, uint8_t channel, uint8_t gain, uint8_t mode, uint8_t data_rate, uint8_t comp_mode, uint8_t comp_pol, uint8_t comp_lat, uint8_t comp_que);
         uint32_t Read(uint8_t device_address);
 };
+
+#endif
