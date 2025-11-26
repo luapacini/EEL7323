@@ -12,7 +12,6 @@ class SHT30: public Sensor {
         uint16_t rawTemperature, rawHumidity;
         uint8_t tempCRC, humCRC;
         uint16_t temp, umidade;
-        uint8_t breakFlag = 0;
         uint8_t initCRC = 0xFF; //de acordo com datasheet
         uint8_t CRC_lookup[256] =  {0x00, 0x31, 0x62, 0x53, 0xC4, 0xF5, 0xA6, 0x97,   0xB9, 0x88, 0xDB, 0xEA, 0x7D, 0x4C, 0x1F, 0x2E,
                                     0x43, 0x72, 0x21, 0x10, 0x87, 0xB6, 0xE5, 0xD4,   0xFA, 0xCB, 0x98, 0xA9, 0x3E, 0x0F, 0x5C, 0x6D,
@@ -34,10 +33,10 @@ class SHT30: public Sensor {
         bool modoAquisicao = true; //0 para oneShot e 1 para periodic
         uint8_t crc8(uint8_t *msg, int lengthOfMsg, uint8_t init);
         bool getModoAquisicao();
+
     public:
         void aquisitionSetup();
-        uint8_t periodicAquisition();
-        uint8_t periodicAquisitionBreak();
+        void periodicAquisition();
         void oneShotAquisition();                
         void setModoAquisicao(bool modo);
 };

@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <avr/io.h>
+#include <unistd.h>
 
 #include "Serial.h"
 #include "I2C.h"
@@ -9,53 +10,96 @@
 #include "ADC.h"
 #include "Buzzer.h"
 #include "LED.h"
+#include "LDR.h"
 
+#define AQUISICOES_POR_CICLO 10
+#define PERIODO_MS 60000  // 60s
 
-volatile uint32_t diffTempo = 0;
+void salvarCSV(SHT30 &sht, LDR &ldr) {
+    bool arquivoExiste = (access("log.csv", F_OK) == 0);
 
-int main ()
-{
+    FILE *fp = fopen("log.csv", "a"); 
+    if (!fp) return;
+
+    // só escreve cabeçalho se for a primeira criação do arquivo
+    if (!arquivoExiste) {
+        fprintf(fp, "Amostra,Temperatura,Umidade,Luminosidade\n");
+    }
+
+    vector<float> temps = sht.getBuffer1();
+    vector<float> hums  = sht.getBuffer2();
+    vector<float> lums  = ldr.getBuffer1();
+
+    for (int i = 0; i < temps.size(); i++) {
+        fprintf(fp, "%d,%.2f,%.2f,%.2f\n",
+                i+1,
+                temps[i],
+                hums[i],
+                lums[i]);
+    }
+
+    fclose(fp);
+    Serial::println("CSV atualizado.");
+}
+
+// ---------------------------------------------------------
+
+int main() {
     cli();
     Serial::Init();
+    I2C::Init();
 
     ADC::Init(ADS1115_ADDRESS_GND, ADC0_TO_GND, PGA_GAIN_FSR_6_144V, CONTINUOUS_MODE, DATA_RATE_860, COMP_MODE_DEF, COMP_POL_LOW, COMP_LAT_OFF, COMP_QUE_OFF);
-
-    SHT30 SHT30_1;
-    ADC ADS1115;
-
-    // uint16_t samples = 0;
-    // uint32_t counter = 0;
-
-    // uint32_t repeated = 0;
-
-    // uint32_t voltage_val = 0;
-    // uint32_t old_voltage = 0;
-
-    //char buffer[10];
-
-    DDRD |= (1 << PD5);
-    // DDRB |= (1 << PB4);
-    // DDRB |= (1 << PB3);
-
-    SHT30_1.aquisitionSetup();
-    SHT30_1.periodicAquisition();
-
+    
     sei();
 
-    while (true)
-    {
+    SHT30 sht;
+    LDR ldr;
 
-        //PORTB &= ~(1 << PB5);
-        snprintf(buffer, sizeof(buffer), "%u", (unsigned int) voltage_val);
-        Serial::print("Tensão medida [mV]: ");
-        Serial::println(buffer);
+    sht.setNome("SHT30");
+    ldr.setNome("LDR");
 
-        snprintf(buffer, sizeof(buffer), "%u", (unsigned int) samples);
-        Serial::print("Número de amostras: ");
-        Serial::println(buffer);
+    // Configuração inicial
+    sht.setModoAquisicao(true);  // periodic mode
+    sht.aquisitionSetup();
 
-        snprintf(buffer, sizeof(buffer), "%u", (unsigned int) repeated);
-        Serial::print("Número de amostras repetidas: ");
-        Serial::println(buffer);
+    int contador = 0;
+
+    while (true) {
+
+        sht.periodicAquisition();
+        ldr.calcularLuminosidade();
+
+        float t = sht.getBuffer1().back();   // última temperatura adicionada
+        float h = sht.getBuffer2().back();   // última umidade adicionada
+        float l = ldr.getBuffer1().back();   // última luminosidade adicionada
+
+        contador++;
+
+        Serial::print("Aquisicao "); 
+        Serial::print(contador);
+        Serial::print(":  Temp = ");
+        Serial::print(t);
+        Serial::print(" °C | Umidade = ");
+        Serial::print(h);
+        Serial::print(" % | Luminosidade = ");
+        Serial::print(l);
+        Serial::println(" %");
+
+        // ---------------- SALVAR CSV -------------------
+        if (contador >= AQUISICOES_POR_CICLO) {
+
+            Serial::println("");
+            Serial::println("10 amostras atingidas. Salvando CSV...");
+            salvarCSV(sht, ldr);
+
+            contador = 0;
+            sht.clearBuffers();
+            ldr.clearBuffers();
+        }
+
+        // Espera o próximo ciclo (60 s)
+        for (int i = 0; i < 60; i++) _delay_ms(1000);
     }
+    return 0;
 }

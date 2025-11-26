@@ -9,6 +9,7 @@ void LDR::calcularLuminosidade() {
 void LDR::ajustarLED(LED LEDacionado) {
     if(luminosidade<60) {
         LEDacionado.setLuminosidade(60-luminosidade);
+        adicionaBuffer1(luminosidade);
     } else {
         //ativar excecao. como?
     }
