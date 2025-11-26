@@ -1,5 +1,10 @@
 #include "Buzzer.h"
 
+Buzzer::Buzzer(int freq, bool est) {
+    frequencia = freq;
+    estado = est;
+}
+
 int Buzzer::getFrequencia() {
     return frequencia;
 }
@@ -14,8 +19,4 @@ void Buzzer::ligar() {
 
 void Buzzer::desligar() {
     estado = false;
-}
-
-void Buzzer::toggle() {
-    estado = !estado;
 }

@@ -23,10 +23,11 @@
 
 class I2C {
     private:
-        bool TimeOut(void); 
-        void SendStart(void);
-        void SendStop(void);
-        void WriteDataByte(uint8_t data);
+        static bool TimeOut(); 
+        static void SendStart();
+        static void SendStop();
+        static void WriteDataByte(uint8_t data);
+        static uint16_t ReadDataByte(bool ack);
     public:
         static void Init(uint16_t speed);
         static void StartTransmission(uint8_t slave_address);

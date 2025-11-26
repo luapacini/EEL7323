@@ -1,27 +1,31 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include <iostream>
 #include <string.h>
 #include <stdlib.h>
-#include <vector>
 
-using namespace std;
+#define NOME_MAX      20
+#define BUFFER_SIZE   10 
 
 class Sensor {
     protected:
-        string nome;
-        vector<float> buffer1;
-        vector<float> buffer2;
+        char nome[NOME_MAX];
+        float buffer1[BUFFER_SIZE];
+        float buffer2[BUFFER_SIZE];
+        int index1;
+        int index2;
     public:
-        void setNome(string newNome);
-        string getNome();
+        void setNome(const char* newNome);
+        const char* getNome();
 
         void adicionaBuffer1(float newData);
-        vector<float> getBufferData1();
+        float getBufferData1(int index);
         void adicionaBuffer2(float newData);
-        vector<float> getBufferData2();
+        float getBufferData2(int index);
         void clearBuffers();
+        float getLastData1();
+        float getLastData2();
+        int getIndex();
 };
 
 #endif

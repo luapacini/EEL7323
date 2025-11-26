@@ -1,10 +1,9 @@
 #include "Atuador.h"
 
-using namespace std;
-
-void Atuador::setNome(string newNome){
-    nome = newNome;
+void Atuador::setNome(const char* newNome) {
+    strncpy(nome, newNome, NOME_MAX - 1);
+    nome[NOME_MAX - 1] = '\0'; 
 }
-string Atuador::getNome(){
+const char* Atuador::getNome() const {
     return nome;
 }

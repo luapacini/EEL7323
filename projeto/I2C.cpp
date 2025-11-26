@@ -1,6 +1,6 @@
 #include "I2C.h"
 #include "Serial.h"
----------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------
 
 //seta os pinos de interrupcao e habilita comunicacao TWI 
 void I2C::Init(uint16_t speed)
@@ -61,7 +61,7 @@ void I2C::WriteDataByte(uint8_t data)
     TWDR0 = data; //seta o registrador TWDR com o dado a ser transmitido
     TWCR0 = (1 << TWINT) | (1 << TWEN); 
 
-    if (I2C_::TimeOut()) {
+    if (I2C::TimeOut()) {
         return;
     }
 }

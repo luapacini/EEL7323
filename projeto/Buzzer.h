@@ -8,11 +8,11 @@ class Buzzer: public Atuador {
         int frequencia;
         bool estado;
     public:
+        Buzzer(int freq, bool est);
         int getFrequencia();
         void setFrequencia(int newFreq);
         void ligar();
         void desligar();
-        void toggle();
 };
 
 #endif

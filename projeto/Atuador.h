@@ -1,19 +1,17 @@
 #ifndef ATUADOR_H
 #define ATUADOR_H
 
-#include <iostream>
 #include <string.h>
 #include <stdlib.h>
-#include <vector>
 
-using namespace std;
+#define NOME_MAX 20
 
 class Atuador {
     protected:
-        string nome;
+        char nome[NOME_MAX];
     public:
-        void setNome(string newNome);
-        string getNome();
+        void setNome(const char* newNome);
+        const char* getNome() const;
 };
 
 #endif

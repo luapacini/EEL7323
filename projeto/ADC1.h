@@ -1,5 +1,5 @@
-#ifndef ADC_H
-#define ADC_H
+#ifndef ADC1_H
+#define ADC1_H
 
 #include <stdint.h>
 
@@ -44,17 +44,17 @@
 
 #define COMP_QUE_OFF 0x03 // Disable the comparator and set the ALERT/RDY pin to high-impedance
 
-#define BUFFER_SIZE 1 // Buffer size para media movel
+#define ADC_BUFFER_SIZE 1 // Buffer size para media movel
 
-class ADC {
+class ADC1 {
     private:
         uint16_t conversion_constant = 0;
-        uint16_t buffer[BUFFER_SIZE] = {0}; // Buffer declaration
+        uint16_t buffer[ADC_BUFFER_SIZE] = {0}; // Buffer declaration
         int buffer_idx = 0; // Buffer index declaration
         unsigned long sum = 0.0; // For the moving average
         uint16_t moving_average(uint16_t new_sample);
     public:
-        static void Init(uint8_t device_address, uint8_t channel, uint8_t gain, uint8_t mode, uint8_t data_rate, uint8_t comp_mode, uint8_t comp_pol, uint8_t comp_lat, uint8_t comp_que);
+        void Init(uint8_t device_address, uint8_t channel, uint8_t gain, uint8_t mode, uint8_t data_rate, uint8_t comp_mode, uint8_t comp_pol, uint8_t comp_lat, uint8_t comp_que);
         uint32_t Read(uint8_t device_address);
 };
 
