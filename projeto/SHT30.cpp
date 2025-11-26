@@ -4,6 +4,7 @@
 #include "SHT30.h"
 #include "Serial.h"
 #include "I2C.h"
+#include "SensorException.h"
     
 bool SHT30::getModoAquisicao(){
     return modoAquisicao;
@@ -13,7 +14,7 @@ void SHT30::setModoAquisicao(bool modo){
 }
 
 uint8_t SHT30::crc8(uint8_t *msg, int lengthOfMsg, uint8_t init) {
-    while (lengthOfMsg-- > 0) init = CRC_lookup[ (init ^ *msg++)];
+    while (lengthOfMsg-- > 0) init = CRC_lookup[(init ^ *msg++)];
     return init;
 }
 
@@ -52,13 +53,19 @@ void SHT30::periodicAquisition() {
 
     if (SHT30::crc8(&(leitura[0]), 2, initCRC) == tempCRC && SHT30::crc8(&(leitura[3]), 2, initCRC) == humCRC) {
         // calcula temperatura e umidade
-        temp = -45000 + 175000 * (rawTemperature / 65535.0); 
-        umidade = 100 * (rawHumidity / 65535.0);
+        temp    = -45.0f + 175.0f * (rawTemperature / 65535.0f);
+        umidade = 100.0f * (rawHumidity / 65535.0f);
+
+        if (temp > LIMITE_SUP_TEMP || temp < LIMITE_INF_TEMP) {
+            throw TemperaturaException(temp);
+        }
+
+        if (umidade > LIMITE_SUP_UMIDADE || umidade < LIMITE_INF_UMIDADE) {
+            throw UmidadeException(umidade);
+        }
         
         adicionaBuffer1(temp);     //guarda temperatura
         adicionaBuffer2(umidade);  // guarda umidade
-
-        _delay_ms(2000);
     } else {
         Serial::println("Houve problema no CRC, nao eh possivel printar resultado");
     }
@@ -74,12 +81,12 @@ void SHT30::oneShotAquisition() {
 
     if (SHT30::crc8(&(leitura[0]), 2, initCRC) == tempCRC && SHT30::crc8(&(leitura[3]), 2, initCRC) == humCRC) {
         // Calculate temperature and humidity  
-        temp = -45000 + 175000 * (rawTemperature / 65535.0); 
-        umidade = 100 * (rawHumidity / 65535.0);
+        temp    = -45.0f + 175.0f * (rawTemperature / 65535.0f);
+        umidade = 100.0f * (rawHumidity / 65535.0f);
 
         adicionaBuffer1(temp);     //guarda temperatura
         adicionaBuffer2(umidade);  // guarda umidade
-        
+
         _delay_ms(2000);
     } else {
         Serial::println("Houve problema no CRC, nao eh possivel printar resultado");

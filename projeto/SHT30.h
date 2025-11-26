@@ -5,6 +5,10 @@
 #include "Sensor.h"
 
 #define SHT30_ADDRESS 0x44
+static constexpr float LIMITE_SUP_TEMP    = 45.0f;
+static constexpr float LIMITE_INF_TEMP    = 10.0f;
+static constexpr float LIMITE_SUP_UMIDADE = 90.0f;
+static constexpr float LIMITE_INF_UMIDADE = 40.0f;
 
 class SHT30: public Sensor {
     private:
