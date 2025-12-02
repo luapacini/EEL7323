@@ -6,12 +6,12 @@
 #include <util/delay.h>
 
 #ifndef TWSR0
-    #undef TWBR0
-    #define TWBR0 TWBR
-    #define TWSR0 TWSR
-    #define TWAR0 TWAR
-    #define TWDR0 TWDR
-    #define TWCR0 TWCR
+    #undef  TWBR0
+    #define TWBR0  TWBR
+    #define TWSR0  TWSR
+    #define TWAR0  TWAR
+    #define TWDR0  TWDR
+    #define TWCR0  TWCR
     #define TWAMR0 TWAMR
 #endif
 

@@ -30,7 +30,7 @@ void SHT30::aquisitionSetup() {
         Serial::println("--- One Shot Aquisition Mode ---"); Serial::println("");
     }
 
-    I2C::WriteData(SHT30_ADDRESS, msg, 2); // Writes the data
+    I2C::WriteData(SHT30_ADDRESS, msg, 2);
 
     _delay_ms(3000);
 }
@@ -71,7 +71,7 @@ void SHT30::oneShotAquisition() {
     uint8_t humCRC = leitura[5];
 
     if (SHT30::crc8(&(leitura[0]), 2, initCRC) == tempCRC && SHT30::crc8(&(leitura[3]), 2, initCRC) == humCRC) {
-        // Calculate temperature and humidity  
+        // calcula temperatura e umidade 
         temp    = -45.0f + 175.0f * (rawTemperature / 65535.0f);
         umidade = 100.0f * (rawHumidity / 65535.0f);
 

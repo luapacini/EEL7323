@@ -12,8 +12,11 @@
 #include "LDR.h"
 #include "RegistroCSV.h"
 
-#define AQUISICOES_POR_CICLO 10
-#define PERIODO_MS 60000  // 60s
+#define AQUISICOES_POR_CICLO    10
+#define PERIODO_MS              60000  // 60s
+
+#define LED_PIN                 PB0 
+#define BUZZER_PIN              PB1
 
 template <typename T, size_t N>
 class Media {
@@ -41,7 +44,7 @@ bool rotinaEmergencia(SHT30& sht, LDR& ldr, Buzzer& buzzer)
 
     buzzer.ligar();
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) { //toca buzzer por 10s
         _delay_ms(1000);  
     }
 
@@ -55,16 +58,22 @@ bool rotinaEmergencia(SHT30& sht, LDR& ldr, Buzzer& buzzer)
 int main() {
     cli();
     Serial::Init();
-    
+    I2C::Init(9600);
     sei();
     
+    int contador = 0;
+    bool estadoCritico = false;
+    char auxbuffer[10]; //buffer para escrita de variaveis na serial
     SHT30 sht;
-    LDR ldr;
-    ADC1 adc1;
-    Buzzer buzzer(100, false);
-    LED led;
+    LDR ldr(&PORTB, LED_PIN);
+    Buzzer buzzer(100, &PORTB, BUZZER_PIN);
+    
+    //configura pinos desejados como saida e inicializa em nivel alto o led
+    DDRB |= (1 << LED_PIN); 
+    DDRB |= (1 << BUZZER_PIN);
+    ldr.ajustarLED(estadoCritico);
 
-    adc1.Init(ADS1115_ADDRESS_GND, ADC0_TO_GND, PGA_GAIN_FSR_6_144V, CONTINUOUS_MODE, DATA_RATE_860, COMP_MODE_DEF, COMP_POL_LOW, COMP_LAT_OFF, COMP_QUE_OFF);
+    ldr.iniciaADC(ADS1115_ADDRESS_GND, ADC0_TO_GND, PGA_GAIN_FSR_6_144V, CONTINUOUS_MODE, DATA_RATE_860, COMP_MODE_DEF, COMP_POL_LOW, COMP_LAT_OFF, COMP_QUE_OFF);
 
     sht.setNome("SHT30");
     ldr.setNome("LDR");
@@ -72,10 +81,6 @@ int main() {
     // Configuração inicial
     sht.setModoAquisicao(true);  // periodic mode
     sht.aquisitionSetup();
-
-    int contador = 0;
-    bool estadoCritico = false;
-    char auxbuffer[10];
 
     while (true) {
 
@@ -86,7 +91,7 @@ int main() {
         float h = sht.getLastData2();   // última umidade adicionada
         float l = ldr.getLastData1();   // última luminosidade adicionada
 
-        ldr.ajustarLED(led, estadoCritico);
+        ldr.ajustarLED(estadoCritico); //ajusta led com base na ultima luminosidade
         
         if(t>45 || t<10 || h>90 || h<40) estadoCritico = true;
 
@@ -110,7 +115,6 @@ int main() {
         Serial::print(auxbuffer);
         Serial::println(" %");
 
-        // ---------------- SALVAR CSV -------------------
         if (contador >= AQUISICOES_POR_CICLO) {
             contador = 0;
             sht.clearBuffers();

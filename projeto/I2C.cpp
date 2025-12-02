@@ -1,6 +1,5 @@
 #include "I2C.h"
 #include "Serial.h"
-//---------------------------------------------------------------------------------------------------
 
 //seta os pinos de interrupcao e habilita comunicacao TWI 
 void I2C::Init(uint16_t speed)
@@ -13,8 +12,6 @@ void I2C::Init(uint16_t speed)
         TWBR0 = 72;
     }
 }
-
-// ---------------------------------------------------------------------------------------------------
 
 //configura um timeout para a espera da flag TWINT ser setada
 bool I2C::TimeOut(void) 
@@ -34,15 +31,12 @@ bool I2C::TimeOut(void)
     return false;
 }
 
-// ---------------------------------------------------------------------------------------------------
-
 //manda uma condicao de inicio
 void I2C::SendStart(void) 
 {
     TWCR0 = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN); 
     I2C::TimeOut();
 }
-// ---------------------------------------------------------------------------------------------------
 
 //manda uma condicao de parada
 void I2C::SendStop(void) 
@@ -52,8 +46,6 @@ void I2C::SendStop(void)
     while ((TWCR & (1<<TWSTO)) && TOut > 0) { TOut--; _delay_us(10); }
 
 }
-
-// ---------------------------------------------------------------------------------------------------
 
 //carrega o byte no registrador TWDR
 void I2C::WriteDataByte(uint8_t data) 
@@ -66,15 +58,11 @@ void I2C::WriteDataByte(uint8_t data)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------
-
 void I2C::StartTransmission(uint8_t slave_address) 
 {
     I2C::SendStart();
     I2C::WriteDataByte(slave_address << 1);
 }
-
-// ---------------------------------------------------------------------------------------------------
 
 void I2C::RequestTransmission(uint8_t slave_address) 
 {
@@ -88,8 +76,6 @@ void I2C::RequestTransmission(uint8_t slave_address)
     }
 }
 
-// ---------------------------------------------------------------------------------------------------
-
 //le um byte de dado no registrador TWDR
 uint16_t I2C::ReadDataByte(bool ack) 
 {
@@ -102,8 +88,6 @@ uint16_t I2C::ReadDataByte(bool ack)
     return TWDR0;
 }
 
-// ---------------------------------------------------------------------------------------------------
-
 //escreve um numero especificado de bytes de dado no registrador TWDR
 void I2C::WriteData(uint8_t device_address, uint8_t *data, uint8_t length)
 {
@@ -115,8 +99,6 @@ void I2C::WriteData(uint8_t device_address, uint8_t *data, uint8_t length)
 
     I2C::SendStop();
 }
-
-// ---------------------------------------------------------------------------------------------------
 
 //le um numero especificado de bytes de dado no registrador TWDR
 void I2C::ReadData(uint8_t device_address, uint8_t *data, uint8_t bytes_num)

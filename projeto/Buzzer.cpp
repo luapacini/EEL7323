@@ -1,8 +1,10 @@
 #include "Buzzer.h"
 
-Buzzer::Buzzer(int freq, bool est) {
+Buzzer::Buzzer(int freq, volatile uint8_t *porta, uint8_t p) {
     frequencia = freq;
-    estado = est;
+    registrador = porta;
+    pino = p;
+    Buzzer::desligar();
 }
 
 int Buzzer::getFrequencia() {
@@ -14,9 +16,9 @@ void Buzzer::setFrequencia(int newFreq) {
 }
 
 void Buzzer::ligar() {
-    estado = true;
+    *registrador |= (1 << pino);
 }
 
 void Buzzer::desligar() {
-    estado = false;
+    *registrador &= ~(1<<pino);
 }

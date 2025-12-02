@@ -1,24 +1,6 @@
 #include "ADC1.h"
 #include "I2C.h"
 
-uint16_t ADC1::moving_average(uint16_t new_sample)
-{
-    sum -= buffer[buffer_idx]; //remove a medida mais antiga da soma
-
-    buffer[buffer_idx] = new_sample; // adiciona nova medida no buffer
-    sum += new_sample; // adiciona nova medida na soma
-
-    buffer_idx++; // incrementa o index
-
-    if (buffer_idx >= ADC_BUFFER_SIZE) {
-        buffer_idx = 0; // volta index para zero
-    }
-
-    return(sum / ADC_BUFFER_SIZE); // retorna media
-}
-// ---------------------------------------------------------------------------------------------------
-
-// funcao de inicializacao
 void ADC1::Init(uint8_t device_address, uint8_t channel, uint8_t gain, uint8_t mode, uint8_t data_rate, uint8_t comp_mode, uint8_t comp_pol, uint8_t comp_lat, uint8_t comp_que)
 {
     uint8_t msg[3];
@@ -38,9 +20,7 @@ void ADC1::Init(uint8_t device_address, uint8_t channel, uint8_t gain, uint8_t m
         conversion_constant = 4096;
     }
 }
-// ---------------------------------------------------------------------------------------------------
 
-//funcao de leitura
 uint32_t ADC1::Read(uint8_t device_address)
 {
     uint8_t readings[2];

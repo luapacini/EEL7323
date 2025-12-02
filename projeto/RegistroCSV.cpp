@@ -5,10 +5,6 @@ uint8_t EEMEM eepromCabecalho;
 RegistroCSV::POD EEMEM eepromRegistros[MAX_REGISTROS];
 uint16_t EEMEM eepromIndice;
 
-// ======================================
-// Implementação da classe RegistroCSV
-// ======================================
-
 RegistroCSV::RegistroCSV() : temperatura(0), umidade(0), luminosidade(0) {}
 
 void RegistroCSV::setTemp(float t) { temperatura = t; }
@@ -33,10 +29,6 @@ void RegistroCSV::fromPOD(const POD& pod) {
     luminosidade = pod.luminosidade;
 }
 
-// ======================================
-// Funções EEPROM
-// ======================================
-
 void initEEPROM_CSV() {
     uint8_t flag = eeprom_read_byte(&eepromCabecalho);
     if (flag != 0xA5) {
@@ -50,15 +42,14 @@ void salvarCSVexcecao(SHT30 &sht, LDR &ldr) {
     initEEPROM_CSV();
 
     uint16_t index = eeprom_read_word(&eepromIndice);
-    if (index >= MAX_REGISTROS) index = 0;
+    if (index >= MAX_REGISTROS) index = 0; //registra ate 50 casos de excecao antes de zerar e comecar a sobreescrever
 
-    RegistroCSV reg;
-    reg.setTemp(sht.getLastData1());
-    reg.setUmid(sht.getLastData2());
-    reg.setLumin(ldr.getLastData1());
+    RegistroCSV::POD pod; 
+    pod.temperatura = sht.getLastData1();
+    pod.umidade = sht.getLastData2();
+    pod.luminosidade = ldr.getLastData1();
 
-    RegistroCSV::POD pod = reg.toPOD();
-    eeprom_update_block(&pod, &eepromRegistros[index], sizeof(RegistroCSV::POD));
+    eeprom_update_block(&pod, &eepromRegistros[index], sizeof(RegistroCSV::POD)); //atualiza eeprom com novos dados
 
     index++;
     eeprom_update_word(&eepromIndice, index);
