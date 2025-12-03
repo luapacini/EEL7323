@@ -63,6 +63,7 @@ int main() {
     
     int contador = 0;
     bool estadoCritico = false;
+    float auxTemp[AQUISICOES_POR_CICLO], auxUmid[AQUISICOES_POR_CICLO], auxLumin[AQUISICOES_POR_CICLO];
     char auxbuffer[10]; //buffer para escrita de variaveis na serial
     SHT30 sht;
     LDR ldr(&PORTB, LED_PIN);
@@ -116,6 +117,30 @@ int main() {
         Serial::println(" %");
 
         if (contador >= AQUISICOES_POR_CICLO) {
+            for (int i=0; i<AQUISICOES_POR_CICLO; i++) {
+                auxTemp[i] = sht.getBufferData1(i);
+                auxUmid[i] = sht.getBufferData2(i);
+                auxLumin[i] = ldr.getBufferData1(i);
+            }
+            float mediaTemp = Media<float, AQUISICOES_POR_CICLO>::calcular(auxTemp);
+            float mediaUmid = Media<float, AQUISICOES_POR_CICLO>::calcular(auxUmid);
+            float mediaLumin = Media<float, AQUISICOES_POR_CICLO>::calcular(auxLumin);
+
+            Serial::println("");
+            Serial::println("--------- CICLO CONCLUIDO ---------");
+            Serial::println("imprimindo medias:");
+            Serial::print("Temp = ");
+            snprintf(auxbuffer, 10, "%u", (unsigned int)(mediaTemp));
+            Serial::print(auxbuffer);
+            Serial::print(" °C | Umidade = ");
+            snprintf(auxbuffer, 10, "%u", (unsigned int)(mediaUmid));
+            Serial::print(auxbuffer);
+            Serial::print(" % | Luminosidade = ");
+            snprintf(auxbuffer, 10, "%u", (unsigned int)(mediaLumin));
+            Serial::print(auxbuffer);
+            Serial::println(" %");
+            Serial::println("");
+
             contador = 0;
             sht.clearBuffers();
             ldr.clearBuffers();
